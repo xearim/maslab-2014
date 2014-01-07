@@ -1,22 +1,21 @@
 package kitbot;
 
-import java.io.OutputStream;
-import java.io.PrintWriter;
-import java.net.Socket;
+import jssc.SerialPort;
 
-public class KitBotNetworkModel implements KitBotModel{
-	private byte motorA = 0;
+public class KitBotLocalModel implements KitBotModel{
+	private SerialPort serialPort;
+    private byte motorA = 0;
     private byte motorB = 0;
-    private Socket connection;
-    OutputStream out;
     
-	public KitBotNetworkModel(String ip) {
+	public KitBotLocalModel() {
 		try {
-			connection = new Socket(ip, 4040);
-			out = connection.getOutputStream();
-		} catch ( Exception e) {
-			System.out.println(e);
-		}
+			serialPort = new SerialPort("COM4");
+            serialPort.openPort();
+            serialPort.setParams(115200, 8, 1, 0);
+        }
+        catch (Exception ex){
+            System.out.println(ex);
+        }
 	}
 	
 	public void setMotors( double powerA, double powerB ) {
@@ -32,7 +31,7 @@ public class KitBotNetworkModel implements KitBotModel{
 			data[1] = motorA;	// Motor A data
 			data[2] = motorB;	// Motor B data
 			data[3] = 'E';		// End signal "E"
-			out.write(data);
+			serialPort.writeBytes(data);
 		} catch ( Exception ex ) {
 			System.out.println(ex);
 		}
@@ -40,7 +39,7 @@ public class KitBotNetworkModel implements KitBotModel{
 	
 	public void finalize() {
 		try {
-			out.close();
+			serialPort.closePort();
 		} catch ( Exception ex ) {
 			System.out.println(ex);
 		}

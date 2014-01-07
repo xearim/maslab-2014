@@ -23,9 +23,9 @@ public class KitBotNetworkMain {
     	window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     	
     	// Replace ip address with what we give you
-    	KitBotNetworkModel model = new KitBotNetworkModel("192.160.0.1");
+    	KitBotNetworkModel model = new KitBotNetworkModel("18.111.118.226");
     	KitBotView view = new KitBotView(width,height,window);
-    	KitBotNetworkController controller = new KitBotNetworkController(model,view);
+    	KitBotController controller = new KitBotController(model,view);
     	
     	window.setSize(width,height);
     	window.setVisible(true);

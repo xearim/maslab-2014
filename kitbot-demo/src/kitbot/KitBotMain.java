@@ -21,7 +21,7 @@ public class KitBotMain {
     	JFrame window = new JFrame("Kit Bot Interface");
     	window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     	
-    	KitBotModel model = new KitBotModel();
+    	KitBotLocalModel model = new KitBotLocalModel();
     	KitBotView view = new KitBotView(width,height,window);
     	KitBotController controller = new KitBotController(model,view);
     	

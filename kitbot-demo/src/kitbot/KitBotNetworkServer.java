@@ -1,6 +1,7 @@
 package kitbot;
 
 import java.io.BufferedReader;
+import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.ServerSocket;
 import java.net.Socket;
@@ -15,21 +16,19 @@ public class KitBotNetworkServer {
 		try {
 			listen = new ServerSocket(4040);
 			serialPort = new SerialPort("COM4");
-            serialPort.openPort();
-            serialPort.setParams(115200, 8, 1, 0);
-            
-            Socket receive = listen.accept();
-        	BufferedReader input = new BufferedReader(new InputStreamReader(receive.getInputStream()));
-        	for(String line = input.readLine(); line != null; line = input.readLine()){
-        		serialPort.writeBytes(line.getBytes("UTF-8"));
-        	}
-        	serialPort.closePort();
-        	receive.close();
-        }
-        catch (Exception ex){
-            System.out.println(ex);
-        }
-    	
-    }
-}
+			serialPort.openPort();
+			serialPort.setParams(115200, 8, 1, 0);
 
+			Socket receive = listen.accept();
+			InputStream input = receive.getInputStream();
+			for (int inByte = input.read(); inByte != -1; inByte = input.read()) {
+				serialPort.writeInt(inByte);
+			}
+			serialPort.closePort();
+			receive.close();
+		} catch (Exception ex) {
+			System.out.println(ex);
+		}
+
+	}
+}
